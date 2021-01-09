@@ -1,0 +1,38 @@
+{
+  "name": "homebakes",
+  "version": "0.0.0",
+  "private": true,
+  "scripts": {
+    "start": "node ./bin/www"
+  },
+  "dependencies": {
+    "bootstrap": "^4.5.3",
+    "cookie-parser": "~1.4.4",
+    "croppie": "^2.6.5",
+    "debug": "~2.6.9",
+    "express": "~4.16.1",
+    "express-fileupload": "^1.2.0",
+    "express-handlebars": "^5.2.0",
+    "express-session": "^1.17.1",
+    "handlebars": "^4.7.6",
+    "handlebars-dateformat": "^1.1.1",
+    "handlebars-helper-formatdate": "^1.0.0",
+    "handlebars-helpers": "^0.10.0",
+    "hbs": "^4.1.1",
+    "hbs-moment": "0.0.1",
+    "http-errors": "~1.6.3",
+    "jquery": "^3.5.1",
+    "messagebird": "^3.5.0",
+    "moment": "^2.29.1",
+    "mongodb": "^3.6.3",
+    "morgan": "~1.9.1",
+    "noty": "^3.2.0-beta",
+    "otp-generator": "^2.0.0",
+    "razorpay": "^2.0.6",
+    "sendotp": "^1.2.9",
+    "springedge": "^1.0.5",
+    "sweetalert": "^2.1.2",
+    "telesignsdk": "^2.2.1",
+    "twilio": "^3.54.1"
+  }
+}

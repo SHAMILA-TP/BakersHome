@@ -1,0 +1,37 @@
+<style>
+    #Cart:hover {color:#fd7e14!important;
+     cursor: pointer;}
+    
+</style>
+
+<section >
+     <div class="card-header">
+                    <h5>Ordered Products</h5>
+                </div>
+    {{!-- <h2 class="mt-3" style="text-align:center;">Products</h2> --}}
+ <div class="row p-3 m-3">
+    {{#each products}}
+        <div class="col-lg-3 col-md-6 mb-4 mb-lg-0 mt-2">
+            <!-- Card-->
+            <div class="card shadow-sm border-0 rounded">
+                <div class="card-body p-0"><img style="width: 50px;height:200px" src="/productImages/{{this.product._id}}.jpg" alt="" class="w-100 card-img-top">
+                   
+                    <div class="p-1">
+                        <h5 class="mb-0">{{this.product.ProductName}}
+                        </h5>
+                        <p class="small text-muted">Price : {{this.product.Price}}
+                            <p class="small text-muted">Qty : {{this.quantity}}
+                       
+                      </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        {{/each}}
+ </div>
+
+</section>
+
+
+
+  

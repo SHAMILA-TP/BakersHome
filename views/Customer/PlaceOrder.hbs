@@ -1,0 +1,196 @@
+<style>
+  .radio-group{
+    position: relative;
+}
+
+.radio{
+    display:inline-block;
+   
+   background-color:#dee2e6;
+    border: 2px solid#79818a;
+    cursor:pointer;
+    margin: 2px 0; 
+}
+
+
+.radio.selected{
+    border-color: #ffc107;
+}
+
+.hoverr {
+   border-color: #e07575;
+}
+
+.radio-group .radio:hover{
+    border-color: #e07575;
+}
+{{!-- .radio-group .radio:not(:hover){
+    border-color: blue;
+} --}}
+</style>
+  <div class="card-header">
+                    <h5>Place Order</h5>
+                </div>
+ {{!-- <h2 class="mt-3" style="text-align:center;">Place Order</h2> --}}
+<section>
+  
+    <div class="container mt-2 ">
+      <form id="form_Checkout">
+        <div class="row">
+            <div class="col-md-6 border border-info p-2 mt-2"  style="background-color:white ;height:350px">
+                 <h3>Enter Delivery Details</h3>
+                 
+                    <label for="">Address</label>
+                    <textarea class="form-control" name="Address" rows="3" >{{addressDetails.address}}</textarea>
+
+                    <label for="">PinCode</label>
+                    <input type="text" class="form-control" name="PinCode" value="{{addressDetails.pincode}}">
+
+                    <label for="">Mobile</label>
+                    <input type="text" class="form-control" name="Mobile" value="{{addressDetails.mobile}}">
+
+            </div>
+           
+            <div class="col-md-5 border border-info p-2 mt-2 pl-2 ml-2"  style="background-color:white ;height:350px">
+                <div class="card mt-5" >
+  <div class="card-body">
+  <h5> Total Amount = {{total}}</h5>
+  <hr>
+  Payment method
+  <div class="form-check">
+  <input class="form-check-input" type="radio" name="PaymentMethod" id="rdoCOD" value="COD" checked>
+  <label class="form-check-label" for="exampleRadios1">
+    COD
+  </label>
+</div>
+<div class="form-check">
+  <input class="form-check-input" type="radio" name="PaymentMethod" id="rdoOnlinePayment" value="Online Payment">
+  <label class="form-check-label" for="exampleRadios2">
+   Online Payment
+  </label>
+</div>
+ 
+ <input type="text" name="userid" id="" value="{{customer._id}}" hidden>
+
+ <button class="btn btn-primary float-right" type="submit">Checkout</button>
+   
+
+  </div>
+</div>
+            </div>
+            </div>
+            </form>
+           
+
+ <div class="row radio-group mt-3"  >
+ {{#each addresses}}
+<div class='radio  col-md-4 p-2 '   >
+ Address: <span id="spnAddress">{{this.address}}</span> </br>
+ Pincode: <span id="spnPin">{{this.pincode}}</span></br>
+  Mobile: <span id="spnMob">{{this.mobile}}</span>
+</div>
+      {{/each}}
+      <br/>
+
+</div>
+
+
+  </div>
+            </section>
+
+<script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+<script>
+  $('#form_Checkout').submit((e)=>{
+    e.preventDefault();
+    $.ajax({
+      url    : '/place_Order',
+      type : 'POST',
+      data   : $('#form_Checkout').serialize() ,//JSON.stringify(data)//
+      success : (response) =>{
+               if(response.cod_success){
+                 location.href='/orderSuccess'
+               }
+               else{
+                  razorpayPayment(response)
+               }
+      }
+    })
+  })
+
+  function razorpayPayment(order)
+  {
+    var options = {
+    "key": "rzp_test_QQvxpqHuyrqGLM", // Enter the Key ID generated from the Dashboard
+    "amount": order.amount, // Amount is in currency subunits. Default currency is INR. Hence, 50000 refers to 50000 paise
+    "currency": "INR",
+    "name": "Baker's Home",
+    "description": "Test Transaction",
+    "image": "https://example.com/your_logo",
+    "order_id": order.id, //This is a sample Order ID. Pass the `id` obtained in the response of Step 1
+    "handler": function (response){
+       // alert(response.razorpay_payment_id);
+       // alert(response.razorpay_order_id);
+       // alert(response.razorpay_signature);
+
+        verifyPayment(response,order)
+    },
+    "prefill": {
+        "name": "Gaurav Kumar",
+        "email": "gaurav.kumar@example.com",
+        "contact": "9999999999"
+    },
+    "notes": {
+        "address": "Razorpay Corporate Office"
+    },
+    "theme": {
+        "color": "#3399cc"
+    }
+};
+var rzp1 = new Razorpay(options);
+rzp1.open();
+  }
+
+  function  verifyPayment(payment,order) {
+      $.ajax({
+        url : '/verify_Payment',
+        data :{
+            payment,
+            order
+        },
+        method : 'post',
+        success :(response)=>{
+          alert(response)
+                if(response)
+                {
+                  location.href='/orderSuccess'
+                }
+                else{
+                  alert('payment failed')
+                }
+        }
+      })
+  }
+  
+  $('.radio-group .radio').click(function(){
+    $(this).parent().find('.radio').removeClass('selected');
+    $(this).addClass('selected');
+
+var Address = $(this).find("#spnAddress").text();
+var Pincode = $(this).find("#spnPin").text();
+var Mob =  $(this).find("#spnMob").text();
+
+
+$("[name='PinCode']").val(Pincode);
+$("[name='Mobile']").val(Mob);
+$("[name='Address']").val(Address);
+
+});
+
+window.onload = function() {
+ var elements = document.getElementsByClassName('radio');
+var requiredElement = elements[0];
+elements[0].classList.add("selected")
+
+};
+
+</script>

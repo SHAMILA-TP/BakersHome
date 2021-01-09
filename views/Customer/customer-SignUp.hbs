@@ -1,0 +1,63 @@
+
+<section>
+ <script src="//netdna.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
+    <script src="//code.jquery.com/jquery-1.11.1.min.js"></script>
+  <link href="css/style.css" rel="stylesheet" id="style">
+    <!-- Bootstrap core Library -->
+    <link href="//netdna.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+   
+    <!-- Google font -->
+    <link href="https://fonts.googleapis.com/css?family=Dancing+Script" rel="stylesheet">
+    <!-- Font Awesome-->
+    <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css" rel="stylesheet">
+
+    
+ <link rel='stylesheet' href='/stylesheets/LoginStyle.css' />
+
+
+
+<!-- Page Content -->
+<div class="container">
+  
+    <div class="row">
+ 
+  
+        <div class="col-md-offset-4 col-md-4 text-center">
+            
+
+
+            {{!-- <h1 class='text-white'>Baker's Home</h1> --}}
+              <div class="form-login"></br>
+               
+                <h3>SignUp</h3>
+                </br>
+                <form action="/customerSignUp" method="POST">
+                <input type="text" name="firstname"  class="form-control" placeholder="First Name" onfocus="this.placeholder = ''" onblur="this.placeholder = 'First Name'"/>
+                </br></br>
+                <input type="text" name="lastname" class="form-control" placeholder="Last Name" onfocus="this.placeholder = ''" onblur="this.placeholder = 'Last Name'"/>
+                </br></br>
+                 <input type="text" name="username"  class="form-control" placeholder="User Name" onfocus="this.placeholder = ''" onblur="this.placeholder = 'User Name'"/>
+                </br></br>
+                <input type="email" name="email" class="form-control" placeholder="Email" onfocus="this.placeholder = ''" onblur="this.placeholder = 'Email'"/>
+                </br></br>
+                 <input type="text" name="password" class="form-control" placeholder="Password" onfocus="this.placeholder = ''" onblur="this.placeholder = 'Password'"/>
+                </br></br>
+                 <input type="text" name="phoneno" class="form-control" placeholder="Phone No" onfocus="this.placeholder = ''" onblur="this.placeholder = 'Phone No'"/>
+                </br></br>
+                <div class="wrapper">
+                        <span class="group-btn">
+                            <button class="btn btn-danger" type="submit">SignUp</button>
+                            
+                        </span>
+                </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    </br>
+    <!--footer-->
+     
+   
+    <!--//footer-->
+</div>
+</section>

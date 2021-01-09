@@ -1,0 +1,71 @@
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js" type="text/javascript"></script>
+<div id="layoutSidenav_content">
+                <main>
+                    <div class="container-fluid">
+                         {{!-- <h1 class="mt-1">Vendors</h1> --}}
+                          <ol class="breadcrumb mb-4">
+                            <li class="breadcrumb-item active">Orders</li>
+                        </ol>
+ 
+
+<div class="row  mt-5 border border-info">
+   <h3>Orders</h3>
+ <table class="table p-3" style="background-color:#e9ecef ;">
+    
+              <thead>
+                <tr>
+                    <th  >Date</th>
+                    <th style="width: 10%;" >Address</th>
+                    <th >Pincode</th>
+                     <th  >Mobile</th>
+                    <th  >Total</th>
+                    <th >Payment</th>
+                    <th>Status</th>
+                    <th></th>
+                </tr>
+            </thead>
+         <tbody>
+                {{#each orders}}
+                <tr>
+                    {{!-- <td>{{this.date}}</td> --}}
+                     <td> {{formatDate this.date "DD/MM/YYYY" }}</td> 
+                    <td>{{this.deliveryDetails.address}}</td>
+                     <td>{{this.deliveryDetails.pincode}}</td>
+                    <td>{{this.deliveryDetails.mobile}}</td>
+                    <td>{{this.totalPrice}}</td>
+                     <td>{{this.paymentMethod}}</td>
+                {{!-- <td>{{this.status}}</td> --}}
+                <td>
+                    <select class="form-control" id="slboxStatus">
+                        {{!-- <option>--Select--</option> --}}
+      <option >Preparing</option>
+      <option >Out for delivery</option>
+      <option >Delivered</option>
+      
+    </select>
+                </td>
+                <td>
+                    {{!-- <a href="/vendor/changeOrderStatus/{{this._id}}" class="btn btn-primary">Proceed</a> --}}
+                 <a onclick="changeOrderStatus('{{this._id}}')" class="btn btn-primary">Proceed</a>
+                </td>
+                </tr>
+                {{/each}}
+            </tbody>
+        </table>
+</div>
+                    </div>
+                </main>
+        </div>
+<script>
+  function  changeOrderStatus(id)
+    {
+        var orderStatus = $('#slboxStatus').find(":selected").text();
+        alert(orderStatus)
+        $.ajax({
+    url    : '/vendor/changeOrderStatus/'+id+'/'+orderStatus,
+    method : 'get' ,
+    success : location.reload()
+    })
+    }
+</script>
+  

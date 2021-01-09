@@ -1,0 +1,105 @@
+
+<section>
+ <script src="//netdna.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
+    <script src="//code.jquery.com/jquery-1.11.1.min.js"></script>
+    
+  <link href="css/style.css" rel="stylesheet" id="style">
+    <!-- Bootstrap core Library -->
+    <link href="//netdna.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+   
+    <!-- Google font -->
+    <link href="https://fonts.googleapis.com/css?family=Dancing+Script" rel="stylesheet">
+    <!-- Font Awesome-->
+    <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css" rel="stylesheet">
+
+    
+ <link rel='stylesheet' href='/stylesheets/LoginStyle.css' />
+<style>
+     .container {
+      padding: 30px;
+  }
+</style>
+<!-- Page Content -->
+<div class="container">
+    <div class="row" style="height:80px">
+             <div class="col-md-offset-4 col-md-4 text-center">
+               {{#if customerloginErr}}
+                <div class="alert alert-danger">
+                    <strong>{{customerloginErrCaption}}</strong> {{customerloginErr}}
+                </div>
+                {{else}}
+                {{/if}}
+                </div>
+    </div>
+    <div class="row">
+    <div class="col-md-offset-4 col-md-4 text-center">
+         <div class="form-login"></br>
+                <h3>Login</h3>
+                </br>
+                <form action="/login" method="POST">
+                <input type="text" name="username"  class="form-control" placeholder="username" onfocus="this.placeholder = ''" onblur="this.placeholder = 'username'"/>
+                </br></br>
+                <input type="text" name="Password" class="form-control" placeholder="password" onfocus="this.placeholder = ''" onblur="this.placeholder = 'password'"/>
+                </br></br>
+                <div class="wrapper">
+                        <span class="group-btn">
+                            <button class="btn btn-danger" type="submit">Login</button>
+                            
+                        </span>
+                </div>
+                </br>
+                 <div class="form-group">
+                    {{!-- <button class="btn btn-primary float-right form-control" type="submit">Login</button> --}}
+                    <p class="font-small  text-center">Not registered? <a href="/customerSignUp">Create new
+                            account</a></p>
+                            {{!-- <p class="font-small text-muted text-center">-- OR Login With -- </p> --}}
+                </div>
+                </form>
+
+                 {{!-- <form action="/OTPlogin" method="POST">
+                <input type="text" name="OTPphoneno"  class="form-control"   placeholder="Phone No" onfocus="this.placeholder = ''" onblur="this.placeholder = 'Phone No'"/>
+                </br></br>
+                <input type="text" name="OTP" class="form-control" placeholder="OTP" onfocus="this.placeholder = ''" onblur="this.placeholder = 'OTP'"/>
+                </br></br>
+                <div class="wrapper">
+                        <span class="group-btn">
+                            <button class="btn btn-danger" type="submit">Login</button>
+                            
+                        </span>
+                </div>
+                
+                </form> --}}
+            </div>
+        </div>
+    </div>
+    </br>
+   
+</div>
+</section>
+
+
+ {{!-- <script src="javascripts/jqueryUncompressed.js"></script> --}}
+<script>
+    function GetOTP(Textbox_PhoneNo)
+{
+alert(Textbox_PhoneNo.value)
+let phoneno =Textbox_PhoneNo.value
+
+$.ajax({
+    url    : 'https://d7networks.com/api/verifier/send,
+    method : 'post' ,
+     headers: {
+    "Authorization": "Token {D7 verify token}"
+  },
+  data :{
+       mobile : "8547576924",
+        sender_id : "SMSINFO",
+        message : "Your otp code is {code}",
+        expiry :"900"
+  }
+    success: (response)=>{
+      alert(response)
+    }
+})
+}
+</script>

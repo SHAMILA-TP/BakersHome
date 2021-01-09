@@ -1,0 +1,52 @@
+
+<section >
+   <div class="card-header">
+                    <h5>Orders</h5>
+                </div>
+   {{!-- <h2 class="mt-3" style="text-align:center;">Our Bakers</h2> --}}
+ <div class="row p-3 m-3">
+  {{!-- <h3 style="text-align: center;">Products</h3> --}}
+  <table class="table p-3" style="background-color:#e9ecef ;">
+    
+            <thead>
+                <tr>
+                    <th  >Date</th>
+                    <th style="width: 10%;" >Address</th>
+                    <th >Pincode</th>
+                     <th  >Mobile</th>
+                    <th  >Total</th>
+                    <th >Payment</th>
+                    <th>Status</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                {{#each orders}}
+                <tr>
+                    {{!-- <td>{{inc @index}}</td> --}}
+                  <td> {{formatDate this.date "DD/MM/YYYY" }}</td> 
+                    {{!-- <td>{{this.date}}</td> --}}
+                      {{!-- <td>{{dateFormat now "dddd, MMMM Do YYYY, h:mm:ss a"}}</td> --}}
+                    {{!-- <td>{{formatDate this.date 'MMMM Do YYYY, h:mm a'}}</td> --}}
+                    
+                   {{!-- <td>{{ dateFormat  this.date 'DD/MM/YYYY' }}</td>  --}}
+                  <td>{{this.deliveryDetails.address}}</td>
+                     <td>{{this.deliveryDetails.pincode}}</td>
+                    <td>{{this.deliveryDetails.mobile}}</td>
+                    <td>{{this.totalPrice}}</td>
+                     <td>{{this.paymentMethod}}</td>
+                <td>{{this.status}}</td>
+                <td>
+                    <a href="/ViewOrderProducts/{{this._id}}" class="btn btn-primary">View Products</a>
+                </td>
+                </tr>
+                {{/each}}
+            </tbody>
+        </table>
+       
+</div>
+</section>
+
+
+
+  

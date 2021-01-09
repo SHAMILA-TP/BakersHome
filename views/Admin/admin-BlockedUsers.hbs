@@ -1,0 +1,68 @@
+
+<div id="layoutSidenav_content">
+                <main>
+                    <div class="container-fluid">
+                         {{!-- <h1 class="mt-1">Vendors</h1> --}}
+                          <ol class="breadcrumb mb-4">
+                            <li class="breadcrumb-item active">Blocked Users</li>
+                        </ol>
+                       <ul class="nav nav-tabs">
+  <li class="nav-item">
+    <a class="nav-link " href="/admin/users">Users</a>
+  </li>
+  <li class="nav-item">
+    <a class="nav-link active" href="#">Blocked Users</a>
+  </li>
+
+</ul>
+<div class="row" style="height:55px!important">
+  {{#if SuccessMsg}}
+
+                  <div class="alert alert-success" style="width: 100%;" >
+                   <strong> {{SuccessMsg_Caption}}</strong> {{SuccessMsg}}
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+    <span aria-hidden="true">&times;</span>
+  </button>
+                   </div>
+                   {{/if}}
+                  </div>
+
+<div class="row">
+  <div class="col-md-12 border border-info mt-3">
+   <h3>Users</h3>
+ <table class="table p-3" style="background-color:#e9ecef ;">
+    
+            <thead>
+                <tr>
+                    <th  >First Name</th>
+                    <th  >Last Name</th>
+                    <th  >Email</th>
+                    <th  >Phone No</th>
+                  <th>Action</th>
+                  {{!-- <th scope="col">Code</th> --}}
+                </tr>
+            </thead>
+            <tbody>
+                {{#each users}}
+                <tr>
+                    <td>{{this.firstname}}</td>
+                    <td>{{this.lastname}}</td>
+                    <td>{{this.email}}</td>
+                    <td>{{this.phoneno}}</td>
+                   <td>
+                       <a  class="btn btn-primary" href="/admin/unblock-user/{{this._id}}" >UnBlock</a>
+                       {{!-- <a class="btn btn-danger" href="/admin/delete-category/{{this._id}}" onclick="return confirm('Are you sure you want to delete {{this.CategoryName}}?')">Delete</a> --}}
+                    </td>
+                     {{!-- <td>{{this.CategoryCode}}</td> --}}
+                </tr>
+                {{/each}}
+            </tbody>
+        </table>
+</div>
+</div>
+ 
+                    </div>
+                </main>
+        </div>
+
+  

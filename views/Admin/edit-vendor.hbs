@@ -1,0 +1,130 @@
+
+<div id="layoutSidenav_content">
+                <main>
+                    <div class="container-fluid">
+                         {{!-- <h1 class="mt-1">Vendors</h1> --}}
+                          <ol class="breadcrumb mb-4">
+                            <li class="breadcrumb-item active">Edit Vendor</li>
+                        </ol>
+  <ul class="nav nav-tabs">
+  <li class="nav-item">
+    <a class="nav-link active" href="#">Vendors</a>
+  </li>
+  <li class="nav-item">
+    <a class="nav-link" href="/admin/addVendor">Add Vendor</a>
+  </li>
+</ul>
+ 
+<div class="row" style="height: 55px;">
+  {{#if VendorUpdateSuccessMsg}}
+
+                  <div class="alert alert-success" style="width: 100%;">
+                   <strong> {{SuccessMsgCaption}}</strong> {{VendorUpdateSuccessMsg}}
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+    <span aria-hidden="true">&times;</span>
+  </button>
+                   </div>
+                   {{/if}}
+                  </div>
+                 
+                  <div>
+                   
+  <form method="POST" enctype="multipart/form-data" action="/admin/edit-vendor/{{vendor._id}}" class="border border-info p-3" style="background-color:#e9ecef ;">
+      <h3>Edit Vendor</h3>
+  <div class="form-row">
+    <div class="form-group col-md-6">
+      <label for="inputEmail4">Name</label>
+      <input type="text" class="form-control" name="name" value="{{vendor.name}}">
+    </div>
+     <div class="form-group col-md-6">
+      <label for="inputState">Category</label>
+      <select name="category" class="form-control" id="ctgry">
+
+         {{!-- <option selected>{{vendor.category}}</option>   --}}
+         {{#each categories}}
+         
+         <option>{{this.CategoryName}}</option>
+         {{/each}}
+        {{!-- <option selected>Choose...</option>
+        <option>...</option> --}}
+      </select>
+    </div>
+   
+  </div>
+  <div class="form-group">
+    <label for="inputAddress">Description</label>
+    <textarea class="form-control" name="Description" rows="3" >{{vendor.Description}}</textarea>
+    {{!-- <input type="text" class="form-control" name="Description" placeholder="Just Bake specializes in Designer Cakes, Wedding Cakes, photo cakes and Birthday Cakes and cakes of any shape you can think of..."> --}}
+  </div>
+  <div class="form-group">
+    <label for="inputAddress2">Address</label>
+     <textarea class="form-control" name="Address" rows="3" >{{vendor.Address}}</textarea>
+   
+  </div>
+  <div class="form-row">
+    <div class="form-group col-md-4">
+      <label for="inputCity">City</label>
+      <input type="text" class="form-control" name="city" value="{{vendor.city}}">
+    </div>
+    <div class="form-group col-md-4">
+      <label for="inputState">District</label>
+       <input type="text" class="form-control" name="district" value="{{vendor.district}}">
+    </div>
+    <div class="form-group col-md-4">
+      <label for="inputZip">Zip</label>
+      <input type="text" class="form-control" name="zip" value="{{vendor.zip}}">
+    </div>
+  </div>
+ <div class="form-row">
+    <div class="form-group col-md-4">
+      <label for="inputCity">Email</label>
+      <input type="text" class="form-control" name="email" value="{{vendor.email}}">
+    </div>
+    <div class="form-group col-md-4">
+      <label for="inputState">Phone No</label>
+       <input type="text" class="form-control" name="phone" value="{{vendor.phone}}">
+    </div>
+    
+  <div class="form-group col-md-4">
+      <label for="inputState">Contact Person</label>
+       <input type="text" class="form-control" name="contactPerson" value="{{vendor.contactPerson}}">
+    </div>
+  </div>
+
+<div class="form-row">
+    <div class="form-group col-md-4">
+      <label for="inputCity">User Name</label>
+      <input type="text" class="form-control" name="{{username}}" value="{{vendor.username}}">
+    </div>
+    <div class="form-group col-md-4">
+      <label for="inputState">Password</label>
+       <input type="text" class="form-control" name="{{password}}" value="{{vendor.password}}">
+    </div>
+     
+  </div>
+
+
+<div class="form-row">
+     <div class="form-group col-md-4">
+   {{!-- <label for="">Image</label> --}}
+                    <img src="/vendor-logos/{{vendor._id}}.jpg" style="width:100px;height:100px" id="imgPreview" class="pt-3">
+                    <input type="file" class="form-control" name="Image" onchange="ViewImage(event)">
+</div>
+    <div class="form-group col-md-2">
+     <input type="text" class="form-control" name="IsDeleted" value="{{IsDeleted}}" style="display: none;">
+    </div>
+ 
+</div>
+
+  <button type="submit" class="btn btn-primary">Update</button>
+
+</div>                    </div>
+                </main>
+        </div>
+
+  <script>
+    function ViewImage(event)
+    {
+document.getElementById('imgPreview').src = URL.createObjectURL(event.target.files[0])
+    }
+</script>

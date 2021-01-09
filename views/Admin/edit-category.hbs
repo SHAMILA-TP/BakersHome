@@ -1,0 +1,67 @@
+
+<div id="layoutSidenav_content">
+                <main>
+                   
+                    <div class="container-fluid">
+                     
+                         {{!-- <h1 class="mt-1">Vendors</h1> --}}
+                          <ol class="breadcrumb mb-4">
+                            <li class="breadcrumb-item active">Category</li>
+                        </ol>
+
+ <ul class="nav nav-tabs">
+  <li class="nav-item">
+    <a class="nav-link" href="/admin/category">Category</a>
+  </li>
+  <li class="nav-item">
+    <a class="nav-link active" href="#">Edit Category</a>
+  </li>
+
+</ul>
+ 
+<div class="row" style="height:40px!important">
+  {{#if CategoryUpdateSuccessMsg}}
+
+                  <div class="alert alert-success" style="width: 50%;">
+                   <strong> {{CategoryUpdateSuccessMsg_Caption}}</strong> {{CategoryUpdateSuccessMsg}}
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+    <span aria-hidden="true">&times;</span>
+  </button>
+                   </div>
+                   {{/if}}
+                  </div>
+                  
+<div class="row">
+   
+  <div class="col-md-6">
+    <form action="/admin/edit-category/{{category._id}}" method="POST" class="border border-info p-3 mt-3" style="background-color:#e9ecef ;" >
+      <h3>New Category</h3>
+  <div class="form-group row">
+    <label for="inputEmail3" class="col-sm-2 col-form-label">Name</label>
+    <div class="col-sm-10">
+      <input type="text" class="form-control" name="CategoryName" placeholder="Name" value="{{category.CategoryName}}">
+    </div>
+  </div>
+  {{!-- <div class="form-group row">
+    <label for="inputPassword3" class="col-sm-2 col-form-label">Code</label>
+    <div class="col-sm-10">
+      <input type="text" class="form-control" name="CategoryCode" placeholder="Code" value="{{category.CategoryCode}}">
+    </div>
+  </div> --}}
+ 
+  <div class="form-group row">
+    <div class="col-sm-10">
+      <button type="submit" class="btn btn-primary">Update</button>
+    </div>
+  </div>
+</form>
+  </div>
+   <div class="col-md-6"></div>
+</div>
+
+ 
+                    </div>
+                </main>
+        </div>
+
+  
