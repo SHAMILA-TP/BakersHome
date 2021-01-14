@@ -66,7 +66,6 @@ module.exports = {
                         })
                     })
     },
-
     deleteProductByProductId : (productid) =>{
         return new Promise((resolve,reject)=>{
             db.get().collection(collection.PRODUCT_COLLECTION).
@@ -78,7 +77,6 @@ module.exports = {
             })
         })
     },
-
     getAllProducts :()=>{
         return new Promise(async(resolve,reject)=>{
             // let products =await db.get().collection(collection.PRODUCT_COLLECTION).find().toArray()
@@ -224,8 +222,9 @@ module.exports = {
             },{ $unwind : '$products'},
             {$project : {item : '$products.item', quantity : '$products.quantity'}},
             { $lookup: {from : collection.PRODUCT_COLLECTION,localField : 'item',foreignField : '_id',as:'products'}},
+            //  { $project :{  itemtotal: {$multiply : [{ '$toInt': '$quantity'},{ '$toInt': '$product.Price'}]}}},
             {$project : {item :1,quantity : 1,product:{$arrayElemAt:['$products',0]},category:'$products.Category',vendorId:'$products.VendorId'}},
-           
+         
             { $lookup:
                {
                  from: collection.VENDOR_COLLECTION,
@@ -241,6 +240,7 @@ module.exports = {
                     product     :1,
                    // ProductName : '$product.ProductName',
                     VendorName  : '$Vendor.name'
+                    // itemtotal :1
         
                    }
                }
@@ -257,7 +257,7 @@ module.exports = {
                 }
             } */
             ]).toArray()
-        console.log(JSON.stringify (CartItems[0]));
+        console.log("cartitems:----"+JSON.stringify (CartItems[0]));
             resolve(CartItems)
         })
     },
@@ -279,10 +279,12 @@ module.exports = {
             {$project : {
                 item :1,
                 quantity : 1,
-                product:{$arrayElemAt:['$product',0]}}},
+                product:{$arrayElemAt:['$product',0]}
+                // {$project :{  itemtotal: {$multiply : [{ '$toInt': '$quantity'},{ '$toInt': '$product.Price'}]},
+            }},
             {$group :{
                 _id   : null,
-                total :{$sum:{$multiply : [{ '$toInt': '$quantity'},{ '$toInt': '$product.Price'}]}}}
+               total :{$sum:{$multiply : [{ '$toInt': '$quantity'},{ '$toInt': '$product.Price'}]}}}
             },
          //   {$project :{ukkiuo9uihb total : ['$quantity',('$product.Price')]}}
            
@@ -290,6 +292,7 @@ module.exports = {
            // console.log(total[0].total);
 if(total[0]!=null)
 {
+    console.log('------------'+JSON.stringify(total[0]));
     resolve(total[0].total)
 }
 else{
@@ -372,6 +375,32 @@ let product = await db.get().collection(collection.PRODUCT_COLLECTION).aggregate
 ]
 ).toArray()
        resolve(product)
+        })
+    },
+    getLatest3Products : () =>{ //for home page
+        return new Promise(async(resolve,reject)=>{
+         //   let products =await db.get().collection(collection.PRODUCT_COLLECTION). find().limit(3).toArray()
+            let products =await db.get().collection(collection.VENDOR_COLLECTION).aggregate([
+                {  $match: { IsBlocked:"false",IsDeleted : "false"} },
+                {$lookup:
+                    {
+                      from: collection.PRODUCT_COLLECTION,
+                      localField: '_id',
+                      foreignField: 'VendorId',
+                       as: 'productdetails'
+                    }
+                },
+                { $unwind : '$productdetails'},
+                {   $project : {
+                _id :'$productdetails._id',
+                // name :1,
+                ProductName :'$productdetails.ProductName',
+                Category :'$productdetails.Category',
+                Description :'$productdetails.Description',
+                Price : '$productdetails.Price'}}
+                    
+            ]).limit(3).toArray()
+            resolve(products)
         })
     }
 

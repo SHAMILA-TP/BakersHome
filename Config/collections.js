@@ -5,5 +5,6 @@ module.exports={
     CUSTOMER_COLLECTION : 'cln_Customer',
     PRODUCT_COLLECTION  : 'cln_Products',
     CART_COLLECTION     : 'cln_Cart',
-    ORDER_COLLECTION    : 'cln_Order'
+    ORDER_COLLECTION    : 'cln_Order',
+    VENDOR_REQUEST_COLLECTION : 'cln_VendorRequest'
 }

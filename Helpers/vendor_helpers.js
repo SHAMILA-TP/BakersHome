@@ -12,9 +12,16 @@ module.exports = {
                         })
                     })
     },
+   
     getAllVendors : () =>{
         return new Promise(async(resolve,reject)=>{
             let vendors =await db.get().collection(collection.VENDOR_COLLECTION).find({IsDeleted : 'false',IsBlocked : 'false'}).toArray()
+            resolve(vendors)
+        })
+    },
+    getLatest4Vendors : () =>{
+        return new Promise(async(resolve,reject)=>{
+            let vendors =await db.get().collection(collection.VENDOR_COLLECTION).find({IsDeleted : 'false',IsBlocked : 'false'}).limit(4).toArray()
             resolve(vendors)
         })
     },

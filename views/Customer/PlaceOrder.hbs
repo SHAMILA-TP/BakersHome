@@ -24,31 +24,35 @@
 .radio-group .radio:hover{
     border-color: #e07575;
 }
-{{!-- .radio-group .radio:not(:hover){
-    border-color: blue;
-} --}}
+
 </style>
-  <div class="card-header">
-                    <h5>Place Order</h5>
-                </div>
+ 
  {{!-- <h2 class="mt-3" style="text-align:center;">Place Order</h2> --}}
-<section>
+<section id="hero" class="d-flex align-items-center justify-content-center">
   
     <div class="container mt-2 ">
+ <div class="card-header">
+                    <h3>Place Order</h3>
+                </div>
+
+
       <form id="form_Checkout">
-        <div class="row">
+        <div class="row" style="text-align:left">
             <div class="col-md-6 border border-info p-2 mt-2"  style="background-color:white ;height:350px">
                  <h3>Enter Delivery Details</h3>
                  
-                    <label for="">Address</label>
+                  <div class="form-group" >
+                    <label for="" >Address</label>
                     <textarea class="form-control" name="Address" rows="3" >{{addressDetails.address}}</textarea>
-
+                  </div>
+                   <div class="form-group">
                     <label for="">PinCode</label>
                     <input type="text" class="form-control" name="PinCode" value="{{addressDetails.pincode}}">
-
+                  </div>
+                  <div class="form-group">
                     <label for="">Mobile</label>
                     <input type="text" class="form-control" name="Mobile" value="{{addressDetails.mobile}}">
-
+                  </div>
             </div>
            
             <div class="col-md-5 border border-info p-2 mt-2 pl-2 ml-2"  style="background-color:white ;height:350px">

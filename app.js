@@ -58,7 +58,8 @@ app.engine( 'hbs', hbs( {
         return options.fn(this);
       }
       return options.inverse(this);
-    }
+    },
+    itemRate : function(price,quantity){return parseInt(price)*parseInt(quantity)}
     // ifEquals  : function(arg1, arg2, options) {
     //   return (arg1 == arg2) ? options.fn(this) : options.inverse(this); }
   //  inc: function(value, options) {return parseInt(value) + 1;}

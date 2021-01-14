@@ -1,38 +1,29 @@
-<style>
-    #Cart:hover {color:#fd7e14!important;
-     cursor: pointer;}
-    #element1 {display:inline-block;margin-right:10px;} 
-a:active{color: red;}
-</style>
-{{!-- <link href="lib/noty.css" rel="stylesheet">
-<link href="lib/themes/semanticui.css" rel="stylesheet"> --}}
-{{!-- <script src="lib/noty.js"></script> --}}
+<section id="hero" class="d-flex align-items-center justify-content-center">
+ <div class="container" data-aos="fade-up">
 
-<section >
+ <div class="card-header" style="color: #ffc451"> 
+  {{#if products}}
+ <h3>{{selectedCategory}} of {{selectedVendor}} </h3>
+                    
+  <ul class="list-group list-group-horizontal-lg " style=" display: flex;
+  justify-content: center;">
+  {{#each categories}}
+  <li class="btn btn-warning ml-2"  ><a style="color: black;" href="/getProductsByCategory/{{this.CategoryName}}/{{../selectedVendor}}">{{this.CategoryName}}</a></li>
+ 
+  {{/each}}
+</ul>
+                    {{else}}
+                     <h3>No data available</h3>
+                     {{/if}}
+                     
+                    
 
-  
-
-
-{{!-- {{selectedCategory}} --}}
-
-     <div class="card-header" >
-                    {{!-- <h5  id="element1" class="btn btn-link">All Products</h5> --}}
-                    <a  id="element1" href="/products" class="btn btn-link">All Products</a>
-                    {{#each categories}}
-{{!--                    
-{{#ifCond this.CategoryName selectedCategory }}
-  
-{{else}}
-   
-{{/ifCond}} --}}
+                   
 
 
-                    <a style="display:inline-block;" class="btn btn-link" href="/getProductsByCategory/{{this.CategoryName}}" >{{this.CategoryName}}</a>
-                    {{/each}}
-                </div>
+   </div>
 
-    {{!-- <h2 class="mt-3" style="text-align:center;">Products</h2> --}}
- <div class="row p-3 m-3">
+ {{!-- <div class="row p-3 m-3">
     {{#each products}}
         <div class="col-lg-3 col-md-6 mb-4 mb-lg-0 mt-2">
             <!-- Card-->
@@ -52,8 +43,36 @@ a:active{color: red;}
             </div>
         </div>
         {{/each}}
- </div>
+ </div> --}}
 
+     
+<div class="row">
+    {{#each products}}
+   <div class="col-md-4 mt-4  card-container">
+      <div class="card text-center product p-4 pt-5 border-0 h-100 rounded-0">
+      <a href="/getProductDetails/{{this._id}}">  <img style="height:250px" class="img-fluid d-block mx-auto" src="/productImages/{{this._id}}.jpg" ></a> 
+        <div class="card-body p-4 py-0 h-xs-440p">
+          <h5 class="card-title font-weight-semi-bold mb-3 w-xl-220p mx-auto">{{this.ProductName}}</h5>
+          <p class="price">Rs.{{this.Price}}</p>
+        </div>
+        <p class="btn w-100 px-4 mx-auto">
+          <input type="submit" class="btn btn-dark btn-lg w-100" name="add-button" value="Add to cart" onclick="AddToCart('{{this._id}}')">
+        </p>
+      </div>
+    </div>
+    {{/each}}
+</div>
+ 
+
+
+
+
+
+
+
+
+
+</div>
 </section>
 
 <script>
@@ -63,11 +82,17 @@ $.ajax({
     url    : '/AddToCart/'+ProductId,
     method : 'get' ,
     success: (response)=>{
+      if(response.status == true){
            Swal.fire({
   icon: 'success',
   title: 'Product Added To Cart',
   showConfirmButton: true
 })
+      }
+      if(response.loginErr == true)
+{
+  window.location.pathname = "/login"
+}
 //new Noty({
   //  theme: 'semanticui',
   //  layout: 'topCenter',

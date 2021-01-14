@@ -1,38 +1,82 @@
 <style>
-  body{
-    background-image: url('https://templarchambers.com/wp-content/uploads/2019/05/B5D3E7.png');
+  .member-info{
+    padding: 25px 15px;
   }
-</style>
+ .member-info h4 {
+  font-weight: 700;
+  margin-bottom: 5px;
+  font-size: 18px;
+  color: #151515;
+}
 
-<section >
-   <div class="card-header">
-                    <h5>Our Bakers</h5>
-                </div>
+.member-info span {
+  display: block;
+  font-size: 13px;
+  font-weight: 400;
+  color: #aaaaaa;
+}
+</style>
+<script>
+  // Shorthand for $( document ).ready()
+$(function() {
+  $("#Home").removeClass("aactive");
+    $("#Bakers").addClass("active");
+  
+});
+</script>
+<section id="hero" class="d-flex align-items-center justify-content-center">
+  <div class="container" data-aos="fade-up">
+   <div class="card-header" > 
+                    <h3>Our Bakers</h3>
+{{!-- <div class="row">
+   <div class="col-md-4 mt-4 mt-sm-0 card-container">
+      <div class="card text-center product p-4 pt-5 border-0 h-100 rounded-0">
+        <img  class="img-fluid d-block mx-auto" src="https://raw.githubusercontent.com/solodev/bootstrap-cards-shopping-cart/master/images/gear-glasses.jpg" alt="Pilot Aviator Glasses Gear Image">
+        <div class="card-body p-4 py-0 h-xs-440p">
+          <h5 class="card-title font-weight-semi-bold mb-3 w-xl-220p mx-auto">Pilot Aviator Glasses</h5>
+          <p class="price">$45.00</p>
+        </div>
+        <p class="btn w-100 px-4 mx-auto">
+          <input type="submit" class="btn btn-dark btn-lg w-100" name="add-button" value="Buy Now">
+        </p>
+      </div>
+    </div>
+</div> --}}
+
    {{!-- <h2 class="mt-3" style="text-align:center;">Our Bakers</h2> --}}
  <div class="row p-3 m-3">
   {{!-- <h3 style="text-align: center;">Products</h3> --}}
   
     {{#each vendors}}
-        <div class="col-lg-3 col-md-6 mb-4 mb-lg-0 mt-2">
+        <div class="col-lg-3 col-md-6 mb-4 mb-lg-0 mt-3">
             <!-- Card-->
             <div class="card shadow-sm border-0 rounded">
                 <div class="card-body p-0">
-                   <a href="/getProductsByVendor/{{this._id}}">
+      <a  href="/getProductsByVendor/{{this._id}}">
                   <img style="width: 50px;height:200px" src="/productImages/{{this._id}}.jpg" alt="" class="w-100 card-img-top">
                    </a>
-                    <div class="p-1">
+                   <div class="member-info">
+                <h4>{{this.name}}</h4>
+                <span>{{this.city}}</span>
+              </div>
+                    {{!-- <div class="card-body p-1 py-0 h-xs-140p" style="color:#ffc451;background-color: rgba(66, 61, 61, 0.3)">
+          <h5 class="card-title font-weight-semi-bold mb-3 w-xl-220p mx-auto">{{this.name}}</h5>
+          <p class="price">{{this.city}}</p>
+        </div> --}}
+                    {{!-- <div class="p-1">
                         <h5 class="mb-0">{{this.name}}</h5>
                         <p class="small text-muted">{{this.city}}</p>
                       
-                    </div>
+                    </div> --}}
                 </div>
             </div>
         </div>
         {{/each}}
        
 </div>
+</div>
+
 </section>
 
 
 
-  

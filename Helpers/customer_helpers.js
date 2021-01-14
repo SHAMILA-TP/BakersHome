@@ -223,4 +223,16 @@ console.log(addressObj);
             resolve(userDetails)
          })
     }
+    //----Vendor Request
+    ,sendVendorRequest:(userEnteredData)=>{
+        return new Promise((resolve,reject)=>{
+            db.get().collection(collection.VENDOR_REQUEST_COLLECTION).insertOne(userEnteredData).then(async(data)=>{
+                reqId=await data.ops[0]._id
+                resolve(reqId)
+            })
+        })
+
+      
+    }
+
     }

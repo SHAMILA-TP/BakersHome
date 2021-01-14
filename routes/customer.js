@@ -53,7 +53,13 @@ router.post('/login', (req, res) => {
    customerHelpers.customerDoLogin(req.body).then((customerData)=>{
       if(customerData!= null)
       {
-        req.session.customer = customerData
+        req.session.customer = customerData;
+
+        req.session.authorized = req.body.authorized;
+        req.session.save(); // This saves the modifications
+
+        res.header('Access-Control-Allow-Credentials', 'true');
+
         res.redirect('/')
       }
    
@@ -69,49 +75,50 @@ router.post('/login', (req, res) => {
 
 router.get('/logout', (req, res) => {
     req.session.customer = null// req.session.destroy()
-    res.redirect('/login')
+    res.redirect('/')
   })
 
 //------------HOME--------------------------------------------
-router.get('/',verifyLogin,async function(req, res, next) {
-  req.session.admin = null;
-  req.session.vendor = null;
-    if (req.session.customer) {
-      req.session.loginErr = false
-      req.session.loginErrCaption = false
-      // vendor_helpers.getAllVendors().then((vendors)=>{
-      //   res.render('Customer/customer-home',{vendors,customerlog:true})
-      //  })
-     // let cartCount = null
-      if (req.session.customer) {
-       cartCount = await customerHelpers.getCartCount(req.session.customer._id)
-      }
+router.get('/',async function(req, res, next) {
 
-      res.render('Customer/customer-home',{customerlog:true,cartCount})
-     } else {
-        res.redirect('/login')
-       }
+let USER = null;
+cartCount = null;
+if (req.session.customer != null) {
+  cartCount = await customerHelpers.getCartCount(req.session.customer._id)
+  USER = req.session.customer
+ }
+  let categories = await category_helpers.getAllCategories();
+  let Latest3products = await product_helpers.getLatest3Products();
+  let Latest4Vendors = await vendor_helpers.getLatest4Vendors()
+  res.render('Customer/Home',{categories,customerlog:true,USER:USER,cartCount,Latest3products,Latest4Vendors})
+
   })
 
-  router.get('/bakers',verifyLogin,(req,res)=>{
+  router.get('/bakers',(req,res)=>{
     vendor_helpers.getAllVendors().then(async(vendors)=>{
-
+let USER = null;
+cartCount = null;
+console.log("session : "+req.session.customer);
       if (req.session.customer) {
         cartCount = await customerHelpers.getCartCount(req.session.customer._id)
+        USER = req.session.customer
        }
-        res.render('Customer/Bakers',{vendors,customerlog:true,cartCount})
+        res.render('Customer/Bakers',{vendors,customerlog:true,cartCount,USER:USER})
        })
    // res.render('Customer/customer-home',{vendors,customerlog:true})
   })
 
-  router.get('/products',verifyLogin,async(req,res)=>{
+  router.get('/products',async(req,res)=>{
     
     product_helpers.getAllProducts().then(async(products)=>{
+      let USER = null;
+      cartCount = null;
       if (req.session.customer) {
         cartCount = await customerHelpers.getCartCount(req.session.customer._id)
+        USER = req.session.customer
        }
        let categories = await category_helpers.getAllCategories();
-       res.render('Customer/Products',{products,customerlog:true,cartCount,categories})
+       res.render('Customer/Products',{products,customerlog:true,cartCount,categories,USER:USER})
        })
    // res.render('Customer/customer-home',{vendors,customerlog:true})
   })
@@ -120,36 +127,49 @@ router.get('/',verifyLogin,async function(req, res, next) {
 
 /*Get cart page*/
 router.get('/cart', verifyLogin, async (req, res) => {
+  let USER = null;
  let products = await product_helpers.getCartProducts(req.session.customer._id)
   let No_of_products = products.length
-
+  USER = req.session.customer
   if(No_of_products == 0){
-    res.render('Customer/EmptyCart',{customerlog:true})
+    res.render('Customer/EmptyCart',{customerlog:true,USER:USER})
   }
 else{
   let total = await product_helpers.getTotalAmount(req.session.customer._id)
-  res.render('Customer/cart', { products, user: req.session.customer._id,customerlog:true,total,No_of_products })
+  res.render('Customer/cart', { products, user: req.session.customer._id,customerlog:true,total,No_of_products,USER:USER })
 }
 })
 
 /*Add to cart*/
-router.get('/AddToCart/:id', verifyLogin, (req, res) => {
+router.get('/AddToCart/:id', (req, res) => {
+  console.log('=====Add to cart called');
   let productId = req.params.id
+  console.log("---------"+req.session.customer);
+
+if(req.session.customer != null){
   product_helpers.addToCart(productId, req.session.customer._id).then((itemInsertedStatus) => {
    res.json({status:itemInsertedStatus}) // res.redirect('/')
    })
+  }
+  else{
+    res.json({loginErr:true})
+  }
  })
 
  router.post('/changeProductQuantity',(req,res,next)=>{
-  product_helpers.changeProductQuantity(req.body).then((response)=>{
-   // response = await product_helpers.getTotalAmount(req.body.user)
+  product_helpers.changeProductQuantity(req.body).then(async(response)=>{
+   let  total = await product_helpers.getTotalAmount(req.body.user)
+   console.log("--Total is --"+total);
  // res.render('Customer/customer-home',{customerlog:true,cartCount:8})
-   res.json(response)
+ console.log("---status "+response.removeProduct);
+   res.json({response:response,total:total})
    })
   })
 
   router.post('/removeProduct',(req,res,next)=>{
+    console.log("--------Remove product called");
  product_helpers.removeProductFromCart(req.body).then((response)=>{
+   console.log("---Removed "+response.removeProduct);
    res.json(response)
      })
     })
@@ -203,6 +223,7 @@ router.get('/placeOrder',verifyLogin,async(req,res)=>{
     console.log(req.session.customer._id);
   let total = await product_helpers.getTotalAmount(req.session.customer._id)
   let customer = req.session.customer;
+ let USER = req.session.customer
 //let addressDetails = await  customer_helpers.getCustomerDeliveryDetailsById(req.session.customer._id)
 let userDetails = await customerHelpers.getUserDetails(req.session.customer._id)
 
@@ -213,15 +234,15 @@ if(userDetails.addresses != null)
    console.log('size = '+userDetails.addresses.length );
   if(userDetails.addresses.length >1)
   {
-    res.render('Customer/PlaceOrder',{customerlog:true,total,customer,addressDetails:addresses[0],addresses:addresses})
+    res.render('Customer/PlaceOrder',{customerlog:true,total,customer,addressDetails:addresses[0],addresses:addresses,USER:USER})
   
   }
   if(userDetails.addresses.length ==1)  {
-    res.render('Customer/PlaceOrder',{customerlog:true,total,customer,addressDetails:addresses[0]})
+    res.render('Customer/PlaceOrder',{customerlog:true,total,customer,addressDetails:addresses[0],USER:USER})
   }
  }
  else{
-  res.render('Customer/PlaceOrder',{customerlog:true,total,customer})
+  res.render('Customer/PlaceOrder',{customerlog:true,total,customer,USER:USER})
  }
 
 
@@ -237,19 +258,34 @@ if(userDetails.addresses != null)
 }
 
  router.get('/orderSuccess',verifyLogin,(req,res)=>{
-  res.render('Customer/SuccessfullOrder',{customerlog:true})
+  let USER = null;
+  if (req.session.customer != null) {
+    USER = req.session.customer
+   }
+  res.render('Customer/SuccessfullOrder',{customerlog:true,USER:USER})
 })
 
 router.get('/orders',verifyLogin,async(req,res)=>{
-  console.log('customer id = '+req.session.customer._id);
+  let USER = null;
+  cartCount = null;
+  if (req.session.customer != null) {
+    cartCount = await customerHelpers.getCartCount(req.session.customer._id)
+    USER = req.session.customer
+   }
   let orders = await customer_helpers.getCustomerOrders(req.session.customer._id)
-  res.render('Customer/Orders',{customerlog:true,user:req.session.customer,orders})
+  res.render('Customer/Orders',{customerlog:true,user:req.session.customer,orders,USER:USER,cartCount})
 })
 
 router.get('/ViewOrderProducts/:id',verifyLogin,async(req,res)=>{
+  let USER = null;
+  cartCount = null;
+      if (req.session.customer != null) {
+        cartCount = await customerHelpers.getCartCount(req.session.customer._id)
+        USER = req.session.customer
+      }
         let products = await customerHelpers.getOrderProdcuts(req.params.id)
         console.log(products);
-        res.render('Customer/OrderProducts',{customerlog:true,user:req.session.customer,products})
+        res.render('Customer/OrderProducts',{customerlog:true,user:req.session.customer,products,USER:USER,cartCount})
 })
 
 
@@ -298,40 +334,97 @@ router.post('/OTPlogin',(req,res)=>{
 
 //-----------------------PRODUCT
 
-router.get('/getProductDetails/:id',verifyLogin,async(req,res)=>{
+router.get('/getProductDetails/:id',async(req,res)=>{
+  console.log("----------------------------------function CALLED");
   cartCount = null;
-   customerHelpers.getCartCount(req.session.customer._id).then((response)=>{
-    console.log('response'+response);
-    cartCount = response
-    })
+  let USER = null;
+  if(req.session.customer != null)
+  {
+    USER = req.session.customer
+    customerHelpers.getCartCount(req.session.customer._id).then((response)=>{
+      console.log('response'+response);
+      cartCount = response
+      })
+  }
+  
 
     // console.log('cartCount'+cartCount);
-  let product = await product_helpers.getProductByProductId(req.params.id)
-  res.render('Customer/ProductDetails',{customerlog:true,user:req.session.customer,product:product[0],cartCount})
+  let product = await product_helpers.getProductByProductId(req.params.id);
+res.json({product:product[0]})
+ // res.render('Customer/ProductDetails',{customerlog:true,user:req.session.customer,product:product[0],cartCount,USER:USER})
 })
 
-router.get('/getProductsByCategory/:category',verifyLogin,(async(req,res)=>{
+router.get('/getProductsByCategory/:category/:vendor',(async(req,res)=>{
+  console.log('-------------------------------hello MRRR');
+  let USER = null;
+  cartCount = null;
     let selectedCategory =   req.params.category
-    let products = await product_helpers.getProductsByCategory(selectedCategory)
+    let selectedVendor =   req.params.vendor
+    console.log(selectedCategory);
+    console.log("-----vendor : "+selectedVendor);
+   let products = await product_helpers.getProductsByCategory(selectedCategory)
+   console.log('products'+products);
     if (req.session.customer) {
+      USER = req.session.customer
       cartCount = await customerHelpers.getCartCount(req.session.customer._id)
      }
      let categories = await category_helpers.getAllCategories();
-     res.render('Customer/categorizedProducts',{products,customerlog:true,cartCount,categories,selectedCategory})
+     res.render('Customer/categorizedProducts',{products,customerlog:true,cartCount,categories,selectedCategory,selectedVendor,USER:USER})
     
 }))
 
+router.get('/getAllProductsByCategory/:category',(async(req,res)=>{ //ALL irrespective of vendor
+ console.log("----------------ALL");
+ 
+  let USER = null;
+  cartCount = null;
+    let selectedCategory =   req.params.category
+    console.log(selectedCategory);
+  let products = await product_helpers.getProductsByCategory(selectedCategory)
+    if (req.session.customer) {
+      USER = req.session.customer
+      cartCount = await customerHelpers.getCartCount(req.session.customer._id)
+     }
+     res.render('Customer/ProductsByCategory',{products,customerlog:true,cartCount,selectedCategory,USER:USER})
+    
+}))
 
-router.get('/getProductsByVendor/:id',verifyLogin,(async(req,res)=>{
+router.get('/getProductsByVendor/:id',(async(req,res)=>{
   let vendorId =   req.params.id
+  let USER = null;
+  cartCount = null;
   let vendor =await vendor_helpers.getVendorByVendorId(vendorId)
   let SelectedVendor = vendor.name;
   let products = await product_helpers.getProductsByVendorId(vendorId)
   if (req.session.customer) {
     cartCount = await customerHelpers.getCartCount(req.session.customer._id)
+    USER = req.session.customer
    }
-  res.render('Customer/vendorizedProducts',{products,customerlog:true,cartCount,SelectedVendor})
+   let categories = await category_helpers.getAllCategories();
+  // res.json(true)
+  res.render('Customer/vendorizedProducts',{products,customerlog:true,cartCount,SelectedVendor,categories,USER:USER})
+  
 }))
+
+//-----------VENDOR REQUEST
+
+router.post('/sendVendorRequest',(req,res)=>{
+  customerHelpers.sendVendorRequest(req.body).then((response)=>{
+   if(response != null)
+   {
+    res.json({SuccessMsgCaption:"Success!",SuccessMsg:"We got your request.We will contact you soon!"})
+   //res.render('Customer/Home',{SuccessMsgCaption: "Success!",SuccessMsg:"We got your request.We will contact you soon!"})
+   }
+  
+  })
+//   category_helpers.CreateCategory(req.body).then((response)=>{
+//  if(response != null)
+//  {
+//   res.render('Admin/admin-AddCategory',{admin:true,CategorySuccessMsg_Caption: messages.CategoryCreationSuccessMsg_Caption,CategorySuccessMsg:messages.CategoryCreationSuccessMsg})
+// }
+//  })
+  })
+
 
 module.exports = router;
 //---------------------------------------------------
