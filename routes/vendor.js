@@ -116,8 +116,7 @@ router.get('/delete-product/:id',verifyLogin,(req,res)=>{
 
 router.get('/orders',verifyLogin,async(req,res)=>{
   let orders = await vendor_helpers.getOrdersByVendorID(req.session.vendor._id)
-  console.log("order "+orders);
-  res.render('Vendor/Vendor_Orders',{vendorlog:true,orders})
+ res.render('Vendor/Vendor_Orders',{vendorlog:true,orders})
   
 })
 
@@ -132,6 +131,7 @@ router.get('/Vendor_OrderSummary',verifyLogin,async(req,res)=>{
 router.get('/changeOrderStatus/:id/:status',verifyLogin,async(req,res)=>{
   console.log(req.params.id);
   status = req.params.status;
+  console.log("status"+status);
   let orderId = req.params.id
   vendor_helpers.changeOrderStatus(orderId,status)
 

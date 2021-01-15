@@ -1,3 +1,4 @@
+
 <script src="http://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js" type="text/javascript"></script>
 <div id="layoutSidenav_content">
                 <main>
@@ -36,7 +37,7 @@
                      <td>{{this.paymentMethod}}</td>
                 {{!-- <td>{{this.status}}</td> --}}
                 <td>
-                    <select class="form-control" id="slboxStatus">
+                    <select  id="slboxStatus{{this._id}}" >
                         {{!-- <option>--Select--</option> --}}
       <option >Preparing</option>
       <option >Out for delivery</option>
@@ -56,16 +57,23 @@
                     </div>
                 </main>
         </div>
+       
 <script>
   function  changeOrderStatus(id)
     {
-        var orderStatus = $('#slboxStatus').find(":selected").text();
-        alert(orderStatus)
+        var e = document.getElementById("slboxStatus"+id);
+        var orderStatus = e.options[e.selectedIndex].text;
+       alert(orderStatus)
+      //  var orderStatus = $('#slboxStatus'+id).find(":selected").text();
         $.ajax({
     url    : '/vendor/changeOrderStatus/'+id+'/'+orderStatus,
     method : 'get' ,
     success : location.reload()
     })
     }
+
+  
+
+
 </script>
   
