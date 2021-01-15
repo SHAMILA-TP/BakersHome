@@ -210,5 +210,44 @@ module.exports = {
             }}
             )
         }
+    },
+    getBestSellers :()=>{
+        return new Promise(async (resolve, reject) => {
+            let total = await db.get().collection(collection.ORDER_COLLECTION).aggregate([
+                // { $match: { user: objectId(userid)        } },
+            {
+                 $unwind : '$products'
+                },
+            {$project : {
+                item : '$products.item', 
+                quantity : '$products.quantity'}},
+            { $lookup: {
+                from : collection.PRODUCT_COLLECTION,localField : 'item',foreignField : '_id',
+                as:'product'}},
+            {$project : {
+                item :1,
+                quantity : 1,
+                product:{$arrayElemAt:['$product',0]}
+                // {$project :{  itemtotal: {$multiply : [{ '$toInt': '$quantity'},{ '$toInt': '$product.Price'}]},
+            }},
+            {$group :{
+                _id   : null,
+               total :{$sum:{$multiply : [{ '$toInt': '$quantity'},{ '$toInt': '$product.Price'}]}}}
+            },
+         //   {$project :{ukkiuo9uihb total : ['$quantity',('$product.Price')]}}
+           
+            ]).toArray()
+           // console.log(total[0].total);
+if(total[0]!=null)
+{
+    console.log('------------'+JSON.stringify(total[0]));
+    resolve(total[0].total)
+}
+else{
+    total =0
+    resolve(total)
+}
+          
+        })
     }
     }
