@@ -329,5 +329,11 @@ router.get('/collectionByMonth',verifyLogin,(req,res)=>{
   console.log(sum);
 })
 
+router.get('/vendorRequests',verifyLogin,async(req,res)=>{
+  let requests =await admin_helpers.getAllVendorRequests()
+  res.render('Admin/Requests',{admin:true,requests})
+})
+
+
   module.exports = router;
   

@@ -1,0 +1,49 @@
+
+<div id="layoutSidenav_content">
+                <main>
+                    <div class="container-fluid">
+                         {{!-- <h1 class="mt-1">Vendors</h1> --}}
+                          <ol class="breadcrumb mb-4">
+                            <li class="breadcrumb-item active">Category</li>
+                        </ol>
+       
+</ul>
+
+
+<div class="row">
+  <div class="col-md-6 border border-info mt-3">
+   <h3>Vendor Requests</h3>
+ <table class="table p-3" style="background-color:#e9ecef ;">
+    
+            <thead>
+                <tr>
+                    <th >Name</th>
+                      <th  >Email</th>
+                        <th >Phone</th>
+                         <th >Message</th>
+                    
+                 
+                  {{!-- <th scope="col">Code</th> --}}
+                </tr>
+            </thead>
+            <tbody>
+                {{#each requests}}
+                <tr>
+                    <td>{{this.name}}</td>
+                    <td>{{this.email}}</td>
+                    <td>{{this.mobile}}</td>
+                    <td>{{this.message}}</td>
+                   
+                  
+                </tr>
+                {{/each}}
+            </tbody>
+        </table>
+</div>
+</div>
+ 
+                    </div>
+                </main>
+        </div>
+
+  

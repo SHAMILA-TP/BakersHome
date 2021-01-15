@@ -62,8 +62,10 @@ router.get('/logout', (req, res) => {
 router.get('/', function(req, res, next) {
  // req.session.admin = null;
  // req.session.customer = null;
+ //vendor_helpers.getBestSellers()
  console.log(req.session.vendor);
    if (req.session.vendor) {
+   // vendor_helpers.getBestSellers()
       vendorlog = true
       res.render('Vendor/vendor-home',{vendorlog})
      } else {

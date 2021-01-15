@@ -93,5 +93,11 @@ module.exports = {
                                   resolve(Counts)
 
                 })
+            },
+            getAllVendorRequests : () =>{
+                return new Promise(async(resolve,reject)=>{
+                    let requests =await db.get().collection(collection.VENDOR_REQUEST_COLLECTION).find().toArray()
+                    resolve(requests)
+                })
             }
     }
