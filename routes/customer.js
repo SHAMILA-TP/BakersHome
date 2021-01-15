@@ -24,8 +24,8 @@ var cartCount = null;
 // const sendOtp = new SendOtp('AuthKey');
 /*------- Common : verify login ---*/
 const verifyLogin = (req, res, next) => {
-  req.session.admin = null;
-  req.session.vendor = null;
+ // req.session.admin = null;
+ // req.session.vendor = null;
     if (req.session.customer) {
       next()
     } else {

@@ -8,26 +8,28 @@ var router = express.Router();
 
 /*------- Common : verify login ---*/
 const verifyLogin = (req, res, next) => {
-  req.session.admin = null;
-  req.session.customer = null;
+//  req.session.admin = null;
+ // req.session.customer = null;
     if (req.session.vendor) {
       next()
     } else {
-     res.redirect('vendor/login')
+   //  res.redirect('Vendor/login')
+     res.redirect('/vendor')
     }
   }
 
  //----------------------- LOGIN, LOGOUT-------------------
 /*Get Login page*/
 router.get('/login', (req, res) => {
-    if (req.session.vendor) {
-      res.redirect('/')
-    }
-    else {
-      res.render('Vendor/vendor-Login', { vendorloginErr: req.session.vendorloginErr, vendorloginErrCaption: req.session.vendorloginErrCaption })
-    }
-    req.session.vendorloginErr = null
-    req.session.vendorloginErrCaption = null
+  res.render('Vendor/login')
+    // if (req.session.vendor) {
+    //   res.redirect('/')
+    // }
+    // else {
+    //   res.render('Vendor/vendor-Login', { vendorloginErr: req.session.vendorloginErr, vendorloginErrCaption: req.session.vendorloginErrCaption })
+    // }
+    // req.session.vendorloginErr = null
+    // req.session.vendorloginErrCaption = null
   })
 
 router.post('/login', (req, res) => {
@@ -42,7 +44,7 @@ router.post('/login', (req, res) => {
      else{
          req.session.vendorloginErrCaption = messages.LoginErrMsg_Caption// "Login Failed!"
          req.session.vendorloginErr = messages.LoginErrMsg//"Incorrect EmailId or Password"
-         res.render('Vendor/vendor-Login', { vendorloginErr: req.session.vendorloginErr, vendorloginErrCaption: req.session.vendorloginErrCaption })
+         res.render('Vendor/login', { vendorloginErr: req.session.vendorloginErr, vendorloginErrCaption: req.session.vendorloginErrCaption })
          req.session.vendorloginErr = null
          req.session.vendorloginErrCaption = null
          req.session.vendor = null
@@ -57,14 +59,15 @@ router.get('/logout', (req, res) => {
   })
 
 //------------HOME--------------------------------------------
-router.get('/',verifyLogin, function(req, res, next) {
-  req.session.admin = null;
-  req.session.customer = null;
+router.get('/', function(req, res, next) {
+ // req.session.admin = null;
+ // req.session.customer = null;
+ console.log(req.session.vendor);
    if (req.session.vendor) {
       vendorlog = true
       res.render('Vendor/vendor-home',{vendorlog})
      } else {
-        res.redirect('vendor/login')
+        res.redirect('Vendor/login')
        }
   })
 
@@ -122,10 +125,12 @@ router.get('/orders',verifyLogin,async(req,res)=>{
 
 
 router.get('/Vendor_OrderSummary',verifyLogin,async(req,res)=>{
-  let orders = await vendor_helpers.getAllOrdersByVendorID(req.session.vendor._id)
-  console.log("order "+orders);
-  res.render('Vendor/Vendor_OrderSummary',{vendorlog:true,orders})
-  
+  if(req.session.vendor != null)
+  {
+    let orders = await vendor_helpers.getAllOrdersByVendorID(req.session.vendor._id)
+    console.log("order "+orders);
+    res.render('Vendor/Vendor_OrderSummary',{vendorlog:true,orders})
+  }
 })
 
 router.get('/changeOrderStatus/:id/:status',verifyLogin,async(req,res)=>{

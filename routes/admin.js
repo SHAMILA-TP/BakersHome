@@ -13,8 +13,8 @@ var router = express.Router();
 
 /*------- Common : verify login ---*/
 const verifyLogin = (req, res, next) => {
-  req.session.vendor = null;
-  req.session.customer = null;
+ // req.session.vendor = null;
+ // req.session.customer = null;
   if (req.session.admin) {
     next()
   } else {
@@ -25,8 +25,8 @@ const verifyLogin = (req, res, next) => {
 
 /* GET home page. */
 router.get('/', function(req, res, next) {
-  req.session.vendor = null;
-  req.session.customer = null;
+ // req.session.vendor = null;
+  //req.session.customer = null;
   if (req.session.admin) {
     // admin_helpers.getCountsForDashboard().then(async(result)=>{
     //   count = await result;
