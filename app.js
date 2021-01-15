@@ -49,8 +49,8 @@ app.set('view engine', 'hbs');
 app.engine( 'hbs', hbs( { 
   extname: 'hbs', 
   defaultLayout: 'layout', 
-  layoutsDir: __dirname + '/../views/layouts/',
-  partialsDir: __dirname + '/../views/partials/',
+  layoutsDir: __dirname + '/views/layouts/',
+  partialsDir: __dirname + '/views/partials/',
   helpers :{ 
     formatDate: function (date, format) {return moment(date).format(format)},
     ifCond : function(v1, v2, options) {
