@@ -49,7 +49,7 @@
 <div class="row">
     {{#each products}}
    <div class="col-md-4 mt-4  card-container">
-      <div class="card text-center product p-4 pt-5 border-0 h-100 rounded-0">
+      <a onclick="getProductDetails('{{this._id}}')" > 
       <a href="/getProductDetails/{{this._id}}">  <img style="height:250px" class="img-fluid d-block mx-auto" src="/productImages/{{this._id}}.jpg" ></a> 
         <div class="card-body p-4 py-0 h-xs-440p">
           <h5 class="card-title font-weight-semi-bold mb-3 w-xl-220p mx-auto">{{this.ProductName}}</h5>
@@ -75,6 +75,62 @@
 </div>
 </section>
 
+<!-- Modal -->
+<div id="myModal" class="modal modal-centered" role="dialog">
+  <div class="modal-dialog">
+
+    <!-- Modal content-->
+    <div class="modal-content">
+      <div class="modal-header" style="display: block;">
+        <button type="button" onclick="Closemodal()" class="close" data-dismiss="modal">&times;</button>
+        <h4 class="modal-title" id="ModalHeader" style="color: green;font-weight:900"></h4>
+      </div>
+      <div class="modal-body">
+            
+
+   <div class="card-container">
+      <div class="card text-center product p-2 pt-2 border-0  rounded-0">
+      {{!-- href="/getProductDetails/{{this._id}}" --}}
+       {{!-- <a  data-toggle="modal" data-target="#myModal" style="cursor: pointer;" data-id="ISBN564541" onclick="ShowProductDetails(event)"> --}}
+
+       <img style="height:300px" id="modalImage" class="img-fluid d-block mx-auto"  >
+        
+        <div class="card-body p-2 py-0 h-xs-440p">
+          <h5 class="card-title font-weight-semi-bold mb-1 w-xl-220p mx-auto">{{this.ProductName}}</h5>
+          <p class="price" id="mod_Price" style="font-weight: 800;color:green">Rs.{{this.Price}}</p>
+        </div>
+        <table class='table borderless' style="text-align:left">
+  
+   <tr>
+    <td id="mod_Category">  </td>
+  </tr>
+   <tr>
+    <td id="mod_Vendor">  </td>
+  </tr>
+   <tr>
+    <td id="mod_Description"> </td>
+  </tr>
+  <tr>
+    
+  </tr>
+</table>
+
+        <p class="btn w-100 px-4 mx-auto">
+          <input type="submit" class="btn btn-dark btn-lg w-100" id="add-button" value="Add to cart" >
+       </p>
+      </div>
+    </div>
+  
+
+      </div>
+      {{!-- <div class="modal-footer">
+        <button type="button" id="modalClose" onclick="Closemodal()" class="btn btn-default" data-dismiss="modal">Close</button>
+      </div> --}}
+    </div>
+
+  </div>
+</div>
+
 <script>
    function AddToCart(ProductId)
 {
@@ -82,17 +138,19 @@ $.ajax({
     url    : '/AddToCart/'+ProductId,
     method : 'get' ,
     success: (response)=>{
-      if(response.status == true){
+if(response.loginErr == true)
+{
+  window.location.pathname = "/login"
+}
+     /* if(response.status == true)*/
+    else  {
            Swal.fire({
   icon: 'success',
   title: 'Product Added To Cart',
   showConfirmButton: true
 })
       }
-      if(response.loginErr == true)
-{
-  window.location.pathname = "/login"
-}
+
 //new Noty({
   //  theme: 'semanticui',
   //  layout: 'topCenter',
@@ -113,7 +171,41 @@ $.ajax({
 })
 }
 
-   
+   //---modal
+
+function getProductDetails(productId)
+{
+  var url = '/getProductDetails/'+productId;
+        $.ajax({
+            type: 'GET',
+            url: url,
+            success: function (output) {
+             let productId = output.product._id;
+              let productName = output.product.ProductName;
+              let productPrice = output.product.Price;
+              let productCategory = output.product.Category;
+              let productVendor = output.product.VendorName;
+              let productDescription = output.product.Description;
+             document.getElementById('modalImage').src='/productImages/'+productId+'.jpg'; 
+             document.getElementById('ModalHeader').innerHTML = productName;
+             document.getElementById('mod_Price').innerHTML = "RS: "+productPrice;
+              document.getElementById('mod_Category').innerHTML = "Category : "+ productCategory;
+               document.getElementById('mod_Vendor').innerHTML = "Vendor : " +productVendor;
+                document.getElementById('mod_Description').innerHTML = "Description : "+ productDescription;
+                document.getElementById("add-button").onclick = function() {AddToCart(productId)}
+               $('#myModal').modal('show');
+           // $('#login_for_review').html(output).modal('show');//now its working
+            },
+            error: function(output){
+            alert("fail");
+            }
+        });
+}
+
+function Closemodal() {
+   $('#myModal').modal('toggle');
+}
+
 </script>
 
   
