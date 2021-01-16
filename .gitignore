@@ -4,3 +4,9 @@ node_modules/
 *.orig
 .idea/
 .vscode/
+
+
+/node_modules
+npm-debug.log
+.DS_Store
+/*.env
