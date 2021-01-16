@@ -7,7 +7,7 @@
   },
   "engines": {
     "node": "v13.14.0"
-},
+  },
   "dependencies": {
     "bootstrap": "^4.5.3",
     "cookie-parser": "~1.4.4",
@@ -17,7 +17,6 @@
     "express-fileupload": "^1.2.0",
     "express-handlebars": "^5.2.0",
     "express-session": "^1.17.1",
-    "handlebars": "^4.7.6",
     "handlebars-dateformat": "^1.1.1",
     "handlebars-helper-formatdate": "^1.0.0",
     "handlebars-helpers": "^0.10.0",
@@ -36,6 +35,9 @@
     "springedge": "^1.0.5",
     "sweetalert": "^2.1.2",
     "telesignsdk": "^2.2.1",
-    "twilio": "^3.54.1"
+    "twilio": "^3.55.0"
+  },
+  "devDependencies": {
+    "handlebars": "^4.7.6"
   }
 }
