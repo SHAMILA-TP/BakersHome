@@ -41,9 +41,7 @@ var app = express();
 
 var session = require('express-session')
 
-// view engine setup
-app.set('views', path.join(__dirname, 'views'));
-app.set('view engine', 'hbs');
+
 
 //setting template engine
 app.engine( 'hbs', hbs( { 
@@ -66,6 +64,12 @@ app.engine( 'hbs', hbs( {
 }
 // helpers: { formatDate: function (date, format) {return moment(date).format(format)}}
 } ) );
+
+// view engine setup
+app.set('views', path.join(__dirname, 'views'));
+app.set('view engine', 'hbs');
+
+
 
 
 app.use(logger('dev'));
