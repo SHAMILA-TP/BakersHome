@@ -46,13 +46,13 @@ var session = require('express-session')
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'hbs');
 
-console.log('__dirname :'+__dirname);
+console.log('__dirname :'+process.cwd());
 //setting template engine
 app.engine( 'hbs', hbs( { 
   extname: 'hbs', 
   defaultLayout: 'layout', 
-  layoutsDir: __dirname + '/views/layouts/',
-  partialsDir: __dirname +'/views/partials'  ,         // '/views/partials/',
+  layoutsDir: process.cwd() + '/views/layouts/',
+  partialsDir: process.cwd() +'/views/partials'  ,         // '/views/partials/',
   helpers :{ 
     formatDate: function (date, format) {return moment(date).format(format)},
     ifCond : function(v1, v2, options) {
