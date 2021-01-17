@@ -51,7 +51,7 @@ var session = require('express-session')
 //setting template engine
 app.engine( 'hbs', hbs( { 
   extname: 'hbs', 
-  defaultLayout: 'layout', 
+defaultLayout: 'layout', 
   layoutsDir: __dirname + '/views/layouts/',
   partialsDir: __dirname +'/views/partials/'  ,         // '/views/partials/',
   helpers :{ 
