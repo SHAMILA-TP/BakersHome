@@ -30,12 +30,11 @@ var fileupload = require('express-fileupload')
 // var hbtdate = require('handlebars-helper-formatdate')(handlebars);
 
 
-//var customerRouter = require('./routes/customer');
-var r = path.join(process.cwd(), 'routes');
-var k = path.join(r,'customer')
-console.log(k);
-
-var customerRouter =  require(k)
+var customerRouter = require('./routes/customer');
+// var r = path.join(process.cwd(), 'routes');
+// var k = path.join(r,'customer')
+// console.log(k);
+// var customerRouter =  require(k)
 
 
 var usersRouter = require('./routes/users');
@@ -48,6 +47,7 @@ var app = express();
 
 var session = require('express-session')
 
+console.log('process.cwd():'+process.cwd());
 
 // view engine setup
 app.set('views', path.join(process.cwd(), 'views'));
