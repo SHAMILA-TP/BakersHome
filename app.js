@@ -52,19 +52,19 @@ app.engine( 'hbs', hbs( {
   extname: 'hbs', 
   defaultLayout: 'layout', 
   layoutsDir: __dirname + '/views/layouts/',
-  partialsDir: __dirname + '/views/partials/'
-//   helpers :{ 
-//     formatDate: function (date, format) {return moment(date).format(format)},
-//     ifCond : function(v1, v2, options) {
-//       if(v1 === v2) {
-//         return options.fn(this);
-//       }
-//       return options.inverse(this);
-//     },
-//     itemRate : function(price,quantity){return parseInt(price)*parseInt(quantity)}
-//     // ifEquals  : function(arg1, arg2, options) {//   return (arg1 == arg2) ? options.fn(this) : options.inverse(this); }
-//   //  inc: function(value, options) {return parseInt(value) + 1;}
-// }
+  partialsDir: __dirname + '/views/partials/',
+  helpers :{ 
+    formatDate: function (date, format) {return moment(date).format(format)},
+    ifCond : function(v1, v2, options) {
+      if(v1 === v2) {
+        return options.fn(this);
+      }
+      return options.inverse(this);
+    },
+    itemRate : function(price,quantity){return parseInt(price)*parseInt(quantity)}
+    // ifEquals  : function(arg1, arg2, options) {//   return (arg1 == arg2) ? options.fn(this) : options.inverse(this); }
+  //  inc: function(value, options) {return parseInt(value) + 1;}
+}
 } ) );
 
 
