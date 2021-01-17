@@ -30,7 +30,14 @@ var fileupload = require('express-fileupload')
 // var hbtdate = require('handlebars-helper-formatdate')(handlebars);
 
 
-var customerRouter = require('./routes/customer');
+//var customerRouter = require('./routes/customer');
+var r = path.join(process.cwd(), 'routes');
+var k = path.join(r,'customer')
+console.log(k);
+
+var customerRouter =  require(k)
+
+
 var usersRouter = require('./routes/users');
 var adminRouter = require('./routes/admin');
 var vendorRouter = require('./routes/vendor');
