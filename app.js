@@ -1,12 +1,14 @@
 var createError = require('http-errors');
-var express = require('express');
+
 var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
 // const Handlebars = require("handlebars");
 var moment = require('moment');
 
+var express = require('express');
  var hbs = require('express-handlebars')
+ var app = express();
 //var hbs = require('handlebars');
 //require('./HandlebarHelpers/handlebars')(hbs);
 // hbs.registerHelper("inc", function(value, options)
@@ -43,21 +45,15 @@ var vendorRouter = require('./routes/vendor');
 
 var db = require('./Config/connection')
 
-var app = express();
 
 var session = require('express-session')
-
-
-// view engine setup
-app.set('views', path.join(__dirname, 'views'));
-app.set('view engine', 'hbs');
 
 //setting template engine
 app.engine( 'hbs', hbs( { 
   extname: 'hbs', 
   defaultLayout: 'layout', 
   layoutsDir: __dirname + '/views/layouts/',
-  partialsDir: process.cwd() +'/views/partials/'  ,         // '/views/partials/',
+  partialsDir: __dirname +'/views/partials/'  ,         // '/views/partials/',
   helpers :{ 
     formatDate: function (date, format) {return moment(date).format(format)},
     ifCond : function(v1, v2, options) {
@@ -71,6 +67,11 @@ app.engine( 'hbs', hbs( {
   //  inc: function(value, options) {return parseInt(value) + 1;}
 }
 } ) );
+
+
+// view engine setup
+app.set('views', path.join(__dirname, 'views'));
+app.set('view engine', 'hbs');
 
 
 app.use(logger('dev'));
