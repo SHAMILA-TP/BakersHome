@@ -7,6 +7,39 @@ var logger = require('morgan');
 var moment = require('moment');
 
  var hbs = require('express-handlebars')
+ var app = express();
+
+// view engine setup
+app.set('views', path.join(process.cwd(), 'views'));
+app.set('view engine', 'hbs');
+
+//setting template engine
+app.engine( 'hbs', hbs( { 
+  extname: 'hbs', 
+  defaultLayout: 'layout', 
+  layoutsDir: process.cwd() + '/views/layouts/',
+  partialsDir: process.cwd() +'/views/partials'  ,         // '/views/partials/',
+  helpers :{ 
+    formatDate: function (date, format) {return moment(date).format(format)},
+    ifCond : function(v1, v2, options) {
+      if(v1 === v2) {
+        return options.fn(this);
+      }
+      return options.inverse(this);
+    },
+    itemRate : function(price,quantity){return parseInt(price)*parseInt(quantity)}
+    // ifEquals  : function(arg1, arg2, options) {//   return (arg1 == arg2) ? options.fn(this) : options.inverse(this); }
+  //  inc: function(value, options) {return parseInt(value) + 1;}
+}
+} ) );
+
+
+
+
+
+
+
+
 //var hbs = require('handlebars');
 //require('./HandlebarHelpers/handlebars')(hbs);
 // hbs.registerHelper("inc", function(value, options)
@@ -43,36 +76,11 @@ var vendorRouter = require('./routes/vendor');
 
 var db = require('./Config/connection')
 
-var app = express();
+
 
 var session = require('express-session')
 
-console.log('process.cwd():'+process.cwd());
 
-// view engine setup
-app.set('views', path.join(process.cwd(), 'views'));
-app.set('view engine', 'hbs');
-
-console.log('__dirname :'+process.cwd());
-//setting template engine
-app.engine( 'hbs', hbs( { 
-  extname: 'hbs', 
-  defaultLayout: 'layout', 
-  layoutsDir: process.cwd() + '/views/layouts/',
-  partialsDir: process.cwd() +'/views/partials'  ,         // '/views/partials/',
-  helpers :{ 
-    formatDate: function (date, format) {return moment(date).format(format)},
-    ifCond : function(v1, v2, options) {
-      if(v1 === v2) {
-        return options.fn(this);
-      }
-      return options.inverse(this);
-    },
-    itemRate : function(price,quantity){return parseInt(price)*parseInt(quantity)}
-    // ifEquals  : function(arg1, arg2, options) {//   return (arg1 == arg2) ? options.fn(this) : options.inverse(this); }
-  //  inc: function(value, options) {return parseInt(value) + 1;}
-}
-} ) );
 
 
 app.use(logger('dev'));
