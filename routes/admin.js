@@ -131,6 +131,7 @@ router.post('/addVendor',verifyLogin,(req,res)=>{
   SuccessMsg = null
 vendor_helpers.CreateVendor(req.body).then((vendorInsertedId)=>
 {
+  console.log("vendorInsertedId: "+vendorInsertedId);
   if(req.files != null){
   let image = req.files.Image
   image.mv   ('./public/vendor-logos/'+vendorInsertedId+'.jpg',(err,done)=> // mv comes from the middleware 'fileupload'

@@ -46,7 +46,7 @@
  </div> --}}
 
      
-<div class="row">
+{{!-- <div class="row">
     {{#each products}}
    <div class="col-md-4 mt-4  card-container">
       <a onclick="getProductDetails('{{this._id}}')" > 
@@ -59,8 +59,29 @@
           <input type="submit" class="btn btn-dark btn-lg w-100" name="add-button" value="Add to cart" onclick="AddToCart('{{this._id}}')">
         </p>
       </div>
+       {{/each}}
+    </div> --}}
+
+<div class="row">
+    {{#each products}}
+   <div class="col-md-4 mt-4  card-container">
+      <div class="card text-center product p-4 pt-5 border-0 h-100 rounded-0">
+   <a onclick="getProductDetails('{{this._id}}')" >    
+        <img style="height:250px" class="img-fluid d-block mx-auto" src="/productImages/{{this._id}}.jpg" >
+        </a> 
+        <div class="card-body p-4 py-0 h-xs-440p">
+          <h5 class="card-title font-weight-semi-bold mb-3 w-xl-220p mx-auto">{{this.ProductName}}</h5>
+          <p class="price">Rs.{{this.Price}}</p>
+        </div>
+        <p class="btn w-100 px-4 mx-auto">
+          <input type="submit" class="btn btn-dark btn-lg w-100" name="add-button" value="Add to cart" onclick="AddToCart('{{this._id}}')">
+        </p>
+      </div>
     </div>
     {{/each}}
+</div>
+
+
 </div>
  
 
